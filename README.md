@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## Control Asistencia
+## Control Asistencia en construcción
 
 -Proyecto control de asistencia realizado en laravel 11
 -se utilizó Jetstream con Livewire
@@ -27,3 +27,6 @@
 ` composer require laravel-lang/common --dev  `
 
 ` php artisan lang:add es  `
+
+
+# vamos en la elaboración del dashboard
