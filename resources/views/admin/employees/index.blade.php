@@ -24,7 +24,11 @@
                         Celular
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Photo
+                        Cargo
+                    </th>
+
+                    <th scope="col" class="px-6 py-3">
+                        Horario
                     </th>
                     <th scope="col" class="px-6 py-3">
                     </th>
@@ -53,9 +57,20 @@
                         <td class="px-6 py-4">
                             {{ $employee->phone }}
                         </td>
-                        <td>
-                            <img class="img-fluid" width="120" max-height="100" src="/storage/{{ $employee->photo }}">
+
+                        <td class="px-6 py-4">
+                            {{ $employee->position->description }}
                         </td>
+
+                        <td class="px-6 py-4">
+                            {{ $employee->schedule->time_in }} - {{ $employee->schedule->time_out }}
+                        </td>
+
+
+
+                        {{--<td>
+                            <img class="img-fluid" width="120" max-height="100" src="/storage/{{ $employee->photo }}">
+                        </td>--}}
                         <td class="px-6 py-4">
                             <a href="{{route('admin.employees.edit', $employee)}}">Editar</a>
                         </td>

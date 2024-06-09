@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\Position;
+use App\Models\Schedule;
 
 class EmployeeController extends Controller
 {
@@ -13,8 +15,10 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::latest('id')->paginate();
+        $positions = Position::all();
+        $schedules = Schedule::all();
 
-        return view('admin.employees.index',compact('employees'));
+        return view('admin.employees.index',compact('employees','positions','schedules'));
     }
 
     /**
@@ -22,7 +26,10 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        $positions = Position::all();
+        $schedules = Schedule::all();
+        return view('admin.employees.create', compact('positions','schedules'));
+
     }
 
     /**
@@ -30,7 +37,23 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //return $request;
+        $request->validate([
+            'employee_id' => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'address' => 'required',
+            'birthdate' => 'required|date',
+            'phone' => 'required',
+            'position_id' => 'required|exists:positions,id',
+            'schedule_id' => 'required|exists:schedules,id',
+        ]);
+
+        Employee::create($request->all());
+
+        return redirect()->route('admin.employees.index');
+
+
     }
 
     /**
