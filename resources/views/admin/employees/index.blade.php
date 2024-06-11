@@ -76,14 +76,10 @@
                         </td>
 
                         <td>
-                            <form id="frm_{{$employee->id}}" method="POST" action=""
-                                onclick="setInfo({{$employee->id}},'{{$employee->name}}')">
+                            <form id="frm_{{$employee->id}}" method="POST" action="{{route('admin.employees.destroy', $employee)}}" onsubmit="return confirmDelete('{{ $employee->firstName }} {{ $employee->lastName }}')">
                                 @method('DELETE')
                                 @csrf
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalConf" >
-                                    Borrar
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
+                                <button type="submit" class="btn btn-danger">Borrar<i class="fa-solid fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -97,3 +93,9 @@
         {{ $employees->links() }}
     </div>
 </x-admin-layout>
+
+<script>
+    function confirmDelete(name) {
+        return confirm('¿Está seguro que desea eliminar a ' + name + '?');
+    }
+</script>

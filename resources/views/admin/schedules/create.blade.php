@@ -1,15 +1,14 @@
 <x-admin-layout>
 
     <h1 class="text-3xl font-semibold mb-2">
-        Editar Horario
+        Nuevo Horario
     </h1>
 
-    <form action="{{route('admin.schedules.update', $schedule)}}" 
+    <form action="{{route('admin.schedules.store')}}" 
         method="POST" >
 
         @csrf
-        @method('PUT')
-        
+
         <x-validation-errors class="mb-4" />
 
         <div class="mb-4">
@@ -18,8 +17,10 @@
             </x-label>
 
             <x-input name="time_in"
-                value="{{$schedule->time_in}}"
-                class="w-full"  />
+                value="{{old('time_in')}}"
+                x-model="time_in"
+                class="w-full" 
+                placeholder="Ingrese el horario de entrada" />
         </div>
 
         <div class="mb-4">
@@ -28,14 +29,16 @@
             </x-label>
 
             <x-input name="time_out"
-                value="{{$schedule->time_out}}"
-                class="w-full"  />
+                value="{{old('time_out')}}"
+                x-model="time_out"
+                class="w-full" 
+                placeholder="Ingrese el horario de salida" />
         </div>
 
 
         <div class="flex justify-end">
             <x-button>
-                Actualizar Horario
+                Crear Nuevo Horario
             </x-button>
         </div>
 

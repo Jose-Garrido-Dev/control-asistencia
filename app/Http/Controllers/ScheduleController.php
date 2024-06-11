@@ -12,7 +12,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $schedules = Schedule::all();
+        $schedules = Schedule::latest('id')->paginate();
         return  view('admin.schedules.index', compact('schedules'));  
     }
 
@@ -21,7 +21,7 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.schedules.create');
     }
 
     /**
@@ -29,38 +29,49 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'time_in' => 'required',
+            'time_out' => 'required',
+
+        ]);
+
+        Schedule::create($request->all());
+
+        return redirect()->route('admin.schedules.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
+ 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Schedule $schedule)
     {
-        //
+        return view('admin.schedules.edit',compact('schedule'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Schedule $schedule)
     {
-        //
+        $request->validate([
+            'time_in' => 'required',
+            'time_out' => 'required',
+        ]);
+        
+        $schedule->update($request->all());
+        return redirect()->route('admin.schedules.index', $schedule);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Schedule $schedule)
     {
-        //
+        // Eliminar el empleado
+        $schedule->delete();
+
+                    // Redirigir de nuevo a la lista de empleados con un mensaje de éxito
+        return redirect()->route('admin.schedules.index')->with('success', 'Cargo eliminado correctamente');
     }
 }

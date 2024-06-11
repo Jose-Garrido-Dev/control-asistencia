@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees');
+            $table->foreignId('employee_id')
+                ->constrained('employees')
+                ->onDelete('cascade'); // Esto asegura que los registros relacionados se eliminen automáticamente;
             $table->date('date');
             $table->time('time_in')->nullable();
             $table->time('time_out')->nullable();

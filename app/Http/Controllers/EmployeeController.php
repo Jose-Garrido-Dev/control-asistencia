@@ -39,7 +39,7 @@ class EmployeeController extends Controller
     {
         //return $request;
         $request->validate([
-            'employee_id' => 'required',
+            'employee_id' => 'required|unique:employees',
             'firstName' => 'required',
             'lastName' => 'required',
             'address' => 'required',
@@ -67,24 +67,49 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Employee $employee)
     {
-        //
+
+        $positions = Position::all();
+        $schedules = Schedule::all();
+
+        return view('admin.employees.edit', compact('employee','positions','schedules'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Employee $employee)
     {
-        //
+
+        $request->validate([
+            'employee_id' => 'required|unique:employees,employee_id,'. $employee->id,
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'address' => 'required',
+            'birthdate' => 'required|date',
+            'phone' => 'required',
+            'position_id' => 'required|exists:positions,id',
+            'schedule_id' => 'required|exists:schedules,id',
+        ]);
+
+        $employee->update($request->all());
+        return redirect()->route('admin.employees.index', $employee);
+
+        
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Employee $employee)
     {
-        //
+
+    // Eliminar el empleado
+    $employee->delete();
+
+    // Redirigir de nuevo a la lista de empleados con un mensaje de éxito
+    return redirect()->route('admin.employees.index')->with('success', 'Empleado eliminado correctamente');
     }
 }

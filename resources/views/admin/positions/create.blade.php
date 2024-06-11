@@ -1,14 +1,13 @@
 <x-admin-layout>
 
     <h1 class="text-3xl font-semibold mb-2">
-        Actualizar Cargo
+        Nuevo Cargo
     </h1>
 
-    <form action="{{route('admin.positions.update',$position)}}" 
+    <form action="{{route('admin.positions.store')}}" 
         method="POST" >
 
         @csrf
-        @method('PUT')
 
         <x-validation-errors class="mb-4" />
 
@@ -18,15 +17,16 @@
             </x-label>
 
             <x-input name="description"
-                value="{{$position->description}}"
+                value="{{old('description')}}"
+                x-model="description"
                 class="w-full" 
-                placeholder="Ingrese el cargo" />
-        </div>     
+                placeholder="Ingrese el nombre del cargo" />
+        </div>
 
 
         <div class="flex justify-end">
             <x-button>
-                Actualizar Cargo
+                Crear Cargo
             </x-button>
         </div>
 

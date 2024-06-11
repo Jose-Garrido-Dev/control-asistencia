@@ -12,7 +12,7 @@ class PositionController extends Controller
      */
     public function index()
     {
-        $positions = Position::all();
+        $positions = Position::latest('id')->paginate();
 
         return view('admin.positions.index',compact('positions'));
     }
@@ -22,7 +22,7 @@ class PositionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.positions.create');
     }
 
     /**
@@ -30,38 +30,46 @@ class PositionController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'description' => 'required',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        Position::create($request->all());
+
+        return redirect()->route('admin.positions.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Position $position)
     {
-        //
+
+        return view('admin.positions.edit',compact('position'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Position $position)
     {
-        //
+        $request->validate([
+            'description' => 'required',
+        ]);
+
+        $position->update($request->all());
+        return redirect()->route('admin.positions.index', $position);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Position $position)
     {
-        //
+            // Eliminar el empleado
+        $position->delete();
+
+        // Redirigir de nuevo a la lista de empleados con un mensaje de éxito
+        return redirect()->route('admin.positions.index')->with('success', 'Cargo eliminado correctamente');
     }
 }
