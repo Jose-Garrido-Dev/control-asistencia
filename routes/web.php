@@ -69,3 +69,12 @@ Route::middleware([
 
 });
 
+// Ruta para mostrar el formulario de inicio de sesión de empleados
+Route::get('employee/login', [EmployeeController::class, 'employeeAttendance'])->name('employee.login');
+
+// Ruta para manejar la autenticación de empleados
+Route::post('employee/login', [EmployeeController::class, 'loginEmployee'])->name('employee.loguearse');
+
+Route::get('employee/dashboard', function () {
+    return view('employee_attendance.index');
+})->name('employee.dashboard');

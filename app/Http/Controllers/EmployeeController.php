@@ -112,4 +112,33 @@ class EmployeeController extends Controller
     // Redirigir de nuevo a la lista de empleados con un mensaje de éxito
     return redirect()->route('admin.employees.index')->with('success', 'Empleado eliminado correctamente');
     }
+
+
+    public function employeeAttendance(){
+        return view('employee_attendance.employeeAttendance');
+    }
+
+        // Maneja la autenticación de empleados
+        public function loginEmployee(Request $request)
+        {
+            
+            $request->validate([
+                'employee_id' => 'required',
+                'password' => 'required',
+            ]);
+    
+            $employee = Employee::where('employee_id', $request->employee_id)->first();
+    
+            if ($employee && substr($employee->employee_id, 0, 4) == $request->password) {
+                // Aquí puedes autenticar al empleado de la manera que prefieras
+                // Por ejemplo, usando una sesión personalizada:
+                session(['employee' => $employee]);
+                
+                return redirect()->route('employee.dashboard', compact('employee')); // Cambia esto según tu necesidad
+            }
+    
+            return back()->withErrors([
+                'employee_id' => 'LA clave o el usuario ingresado no son correctos.',
+            ]);
+        }
 }
