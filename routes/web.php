@@ -7,7 +7,7 @@ use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('employee_attendance.employeeAttendance');
 });
 
 Route::middleware([
@@ -69,12 +69,16 @@ Route::middleware([
 
 });
 
-// Ruta para mostrar el formulario de inicio de sesión de empleados
-Route::get('employee/login', [EmployeeController::class, 'employeeAttendance'])->name('employee.login');
 
-// Ruta para manejar la autenticación de empleados
-Route::post('employee/login', [EmployeeController::class, 'loginEmployee'])->name('employee.loguearse');
+Route::middleware(['web'])->group(function () {
+    // Ruta para mostrar el formulario de inicio de sesión de empleados
+    Route::get('employee/login', [EmployeeController::class, 'employeeAttendance'])->name('employee.login');
 
-Route::get('employee/dashboard', function () {
-    return view('employee_attendance.index');
-})->name('employee.dashboard');
+    // Ruta para manejar la autenticación de empleados
+    Route::post('employee/login', [EmployeeController::class, 'loginEmployee'])->name('employee.loguearse');
+
+    // Ruta para el dashboard de empleados, protegida por el middleware
+    Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard')->middleware([\App\Http\Middleware\EmployeeAuth::class]);
+
+    Route::post('employee/logout', [EmployeeController::class, 'logoutEmployee'])->name('employee.logout');
+});

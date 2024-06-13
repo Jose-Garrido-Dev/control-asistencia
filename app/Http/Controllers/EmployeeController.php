@@ -132,13 +132,47 @@ class EmployeeController extends Controller
             if ($employee && substr($employee->employee_id, 0, 4) == $request->password) {
                 // Aquí puedes autenticar al empleado de la manera que prefieras
                 // Por ejemplo, usando una sesión personalizada:
-                session(['employee' => $employee]);
                 
-                return redirect()->route('employee.dashboard', compact('employee')); // Cambia esto según tu necesidad
+                session([
+                    'employee' => $employee,
+                    'firstName' => $employee->firstName,
+                    'lastName' => $employee->lastName,
+                ]);
+
+                //$data = $request->session()->all();
+
+                //return $data;
+
+           
+                return redirect()->route('employee.dashboard',compact('employee')); // Cambia esto según tu necesidad
             }
     
             return back()->withErrors([
-                'employee_id' => 'LA clave o el usuario ingresado no son correctos.',
+                'employee_id' => 'La clave o el usuario ingresado no son correctos.',
             ]);
+        }
+
+        public function dashboard()
+        {
+            // Obtener los datos del empleado desde la sesión
+            $employee = session('employee');
+            $firstName = session('firstName');
+            $lastName = session('lastName');
+    
+            // Verificar que los datos de la sesión están presentes
+            if (!$employee) {
+                return redirect()->route('employee.login')->withErrors('Por favor, inicia sesión primero.');
+            }
+    
+            // Pasar los datos del empleado a la vista del dashboard
+            return view('employee_attendance.index', compact('employee', 'firstName', 'lastName'));
+        }
+
+        public function logoutEmployee(Request $request)
+        {
+            $request->session()->forget(['employee', 'firstName', 'lastName']);
+            $request->session()->flush(); // Para asegurar que la sesión se limpie completamente
+    
+            return redirect()->route('employee.login');
         }
 }
