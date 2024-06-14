@@ -165,7 +165,10 @@ class EmployeeController extends Controller
             }
     
             // Pasar los datos del empleado a la vista del dashboard
-            return view('employee_attendance.index', compact('employee', 'firstName', 'lastName'));
+
+            $employees=Employee::all();
+            $totalEmployees = $employees->count();
+            return view('employee_attendance.index', compact('employee', 'firstName', 'lastName','totalEmployees'));
         }
 
         public function logoutEmployee(Request $request)

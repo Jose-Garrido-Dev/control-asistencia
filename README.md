@@ -30,3 +30,9 @@
 
 
 # vamos en la elaboración del dashboard
+
+
+
+# Para la autenticación de empleados creamos un middleware para evitar acceso a personas no autorizadas
+
+php artisan make:middleware EmployeeAuth
