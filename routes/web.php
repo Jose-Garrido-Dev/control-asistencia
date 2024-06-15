@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\EmployeeAtendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ScheduleController;
@@ -65,7 +66,7 @@ Route::middleware([
             'edit' => 'admin.attendances.edit',
             'update' => 'admin.attendances.update',
             'destroy' => 'admin.attendances.destroy'
-        ]);
+        ])->middleware([\App\Http\Middleware\EmployeeAuth::class]);
 
 });
 
@@ -81,4 +82,6 @@ Route::middleware(['web'])->group(function () {
     Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard')->middleware([\App\Http\Middleware\EmployeeAuth::class]);
 
     Route::post('employee/logout', [EmployeeController::class, 'logoutEmployee'])->name('employee.logout');
+
+    Route::post('employee/store',[EmployeeAtendanceController::class,'store'])->name('employee.store');
 });

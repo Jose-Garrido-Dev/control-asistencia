@@ -36,6 +36,7 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         //
+        
     }
 
     /**

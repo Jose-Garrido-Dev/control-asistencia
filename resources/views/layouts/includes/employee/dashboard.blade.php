@@ -29,8 +29,8 @@
 
   <!-- Modal -->
   <div x-show="showModal" @click.away="showModal = false" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
-      <div class="flex items-center justify-center min-h-screen">
-          <div class="relative p-4 w-full max-w-md mx-auto bg-white rounded-lg shadow dark:bg-gray-700">
+      <div class="flex items-center justify-center min-h-screen bg-opacity-60 bg-gray-700">
+          <div class="relative p-4 w-full max-w-lg mx-auto bg-white rounded-lg shadow-2xl dark:bg-gray-700">
               <div class="absolute top-3 right-2">
                   <button @click="showModal = false" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-12 h-12 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                       <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -43,25 +43,32 @@
                   <span class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" >
                     <i class="fa-solid fa-user-clock fa-3x"></i>
                   </span>
+                  
                   <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Registro</h3>
                   <!-- Livewire component para confirmar o cancelar la acción -->
+                  
 
          
-                  <form class="max-w-sm mx-auto">
-                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Para registrar tu entrada o salida debes seleccionarlo en la lista desplegable. Luego tendrás que ingresar tu clave de ingreso al sistema para que el registro se pueda realizar.</label>
-                    <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                      <option selected>Selecciona un estado</option>
-                      <option value="US">Entrada</option>
-                      <option value="CA">Salida</option>
+                  <form class="max-w-sm mx-auto" method="POST" action="{{ route('employee.store') }}">
+                    @csrf
+                    <label for="time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecciona un estado:</label>
+                    <select id="time" name="time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="" selected>Selecciona un estado</option>
+                        <option value="in">Entrada</option>
+                        <option value="out">Salida</option>
                     </select>
+                
+                    <!-- Campo oculto para el employee_id -->
+                    <input type="hidden" name="employee_id" value="{{ session('employee')->employee_id }}">
+                
                     <div class="mt-3">
-                      <button class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        <i class="fa-regular fa-clock"></i> 
-                        Registrar Asistencia
-                      </button>
+                        <button type="submit" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                            <i class="fa-regular fa-clock"></i> 
+                            Registrar Asistencia
+                        </button>
                     </div>
-
-                  </form>
+                </form>
+                
                   
               </div>
           </div>
