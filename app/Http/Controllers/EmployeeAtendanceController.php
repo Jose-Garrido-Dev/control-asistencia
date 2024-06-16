@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\Employee;
+use Carbon\Carbon;
+
 
 class EmployeeAtendanceController extends Controller
 {
@@ -36,12 +39,32 @@ class EmployeeAtendanceController extends Controller
             'employee_id' => 'required'
         ]);
 
+        $employee = Employee::where('employee_id', $request->employee_id)->first('id');
+        if (!$employee) {
+            return back()->with('error', 'Empleado no encontrado.');
+        }
+    
+        $employee_id = $employee->id; // Acceder al valor del campo id
+
         if($request->time === 'in'){
             $currentTime = now()->format('H:i:s');
                     // Crear o actualizar el registro de asistencia
+
+                // Verificar si ya existe un registro para hoy con 'time_in' ya registrado
+            $existingAttendance = Attendance::where('employee_id', $employee_id)
+                                                ->where('date', now()->toDateString())
+                                                ->whereNotNull('time_in')
+                                                ->first();
+
+            if ($existingAttendance) {
+            return back()->with('error', 'Ya se ha registrado una entrada para hoy.');
+            }
+
+
         $attendance = Attendance::updateOrCreate(
             [
-                'employee_id' => $request->employee_id,
+                'employee_id' => $employee_id,
+                'rut' => $request->employee_id,
                 'date' => now()->toDateString(),
             ],
             [
@@ -57,12 +80,43 @@ class EmployeeAtendanceController extends Controller
         }
 
         if($request->time === 'out'){
-            return "usted ha salido";
+
+            $currentTime = now()->format('H:i:s');
+
+                    // Buscar el registro de asistencia del día de hoy para el empleado
+            $attendance = Attendance::where('employee_id', $employee_id)
+            ->where('date', now()->toDateString())
+            ->first();
+
+            if (!$attendance || !$attendance->time_in) {
+                return back()->with('error', 'No se ha registrado una entrada para hoy.');
+            }
+
+                    // Verificar si ya se ha registrado una salida para hoy
+        if ($attendance->time_out) {
+            return back()->with('error', 'Ya se ha registrado una salida para hoy.');
         }
 
-        // Obtener la hora actual en formato hh:mm:ss
-        
+                    // Calcular las horas trabajadas
+            $timeIn = Carbon::createFromFormat('H:i:s', $attendance->time_in);
+            $timeOut = Carbon::createFromFormat('H:i:s', $currentTime);
+            $numHr = $timeIn->diffInHours($timeOut);
+            // Redondear hacia abajo (floor) o hacia arriba (ceil) según tu necesidad
+            $numHr = floor($numHr);
 
+            // Actualizar el registro de asistencia con la hora de salida y las horas trabajadas
+            $attendance->update([
+                'time_out' => $currentTime,
+                'num_hr' => $numHr,
+            ]);
+
+            // Devolver una redirección a la página anterior con un mensaje de éxito
+            return back()->with('success', 'Salida registrada correctamente.');
+           }
+
+        // En caso de que no se cumpla ninguna condición
+        return back()->with('error', 'Operación no válida.');
+        
 
     }
 
@@ -87,7 +141,7 @@ class EmployeeAtendanceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
     }
 
     /**

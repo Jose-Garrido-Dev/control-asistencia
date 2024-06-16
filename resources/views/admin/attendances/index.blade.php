@@ -20,6 +20,10 @@
                         </th>
 
                         <th scope="col" class="px-6 py-3">
+                            Horario
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
                             Hora de entrada
                         </th>
 
@@ -57,6 +61,12 @@
                             </td>
 
                             <td class="px-6 py-4">
+                                @if ($attendance->employee->schedule)
+                                    {{ $attendance->employee->schedule->time_in }} - {{ $attendance->employee->schedule->time_out }}
+                                 @endif
+                            </td>
+
+                            <td class="px-6 py-4">
                                 {{ $attendance->time_in }}
                             </td>
 
@@ -65,11 +75,17 @@
                             </td>
 
                             <td class="px-6 py-4">
-                                {{ $attendance->status }}
+                                    @if ($attendance->status == 1)
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-1 px-1 py-0.1 rounded dark:bg-green-900 dark:text-green-300">A tiempo</span>
+                                    @elseif ($attendance->status == 2)
+                                    <span class="bg-red-100 text-red-800 text-xs font-medium me-1 px-1 py-0.1 rounded dark:bg-red-900 dark:text-red-300">Atraso</span>
+                                    @else
+                                    <span class="bg-gray-100 text-gray-800 text-xs font-medium me-1 px-1 py-0.1 rounded dark:bg-gray-700 dark:text-gray-300">No especifica</span>
+                                    @endif
                             </td>
 
                             <td class="px-6 py-4">
-                                {{ $attendance->num_hour }}
+                                {{ $attendance->num_hr }}
                             </td>
     
                             <td class="px-6 py-4">

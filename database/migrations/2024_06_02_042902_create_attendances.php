@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('employee_id')
                 ->constrained('employees')
                 ->onDelete('cascade'); // Esto asegura que los registros relacionados se eliminen automáticamente;
+            $table->string('rut');    
             $table->date('date');
             $table->time('time_in')->nullable();
             $table->time('time_out')->nullable();

@@ -14,7 +14,7 @@ class EmployeeSeeder extends Seeder
     {
         DB::table('employees')->insert([
             [
-                'employee_id' => '18109382k',
+                'employee_id' => '11543567-7',
                 'firstName' => 'Alice',
                 'lastName' => 'Johnson',
                 'address' => '123 Main St',
@@ -25,9 +25,9 @@ class EmployeeSeeder extends Seeder
                 'photo' => 'photos/employee1.jpg',
             ],
             [
-                'employee_id' => '123435422',
-                'firstName' => 'Bob',
-                'lastName' => 'Brown',
+                'employee_id' => '17770742-2',
+                'firstName' => 'Rosbita',
+                'lastName' => 'Reyes',
                 'address' => '456 Oak St',
                 'birthdate' => '1990-08-20',
                 'phone' => '0987654321',
@@ -36,8 +36,8 @@ class EmployeeSeeder extends Seeder
                 'photo' => 'photos/employee2.jpg',
             ],
             [
-                'employee_id' => '132329321',
-                'firstName' => 'Charlie',
+                'employee_id' => '7299553-6',
+                'firstName' => 'Carlos',
                 'lastName' => 'Davis',
                 'address' => '789 Pine St',
                 'birthdate' => '1988-12-25',

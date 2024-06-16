@@ -16,6 +16,7 @@ class AttendanceSeeder extends Seeder
         DB::table('attendances')->insert([
             [
                 'employee_id' => 1, // Alice
+                'rut' => '11543567-7',
                 'date' => '2024-06-01',
                 'time_in' => '07:00:00',
                 'status' => 1,
@@ -23,7 +24,8 @@ class AttendanceSeeder extends Seeder
                 'num_hr' => 8,
             ],
             [
-                'employee_id' => 2, // Bob
+                'employee_id' => 2, // Rosbita
+                'rut' => '17770742-2',
                 'date' => '2024-06-01',
                 'time_in' => '19:00:00',
                 'status' => 1,
@@ -31,7 +33,8 @@ class AttendanceSeeder extends Seeder
                 'num_hr' => 8,
             ],
             [
-                'employee_id' => 3, // Charlie
+                'employee_id' => 3, // Carlos
+                'rut' => '7299553-6',
                 'date' => '2024-06-01',
                 'time_in' => '14:30:00',
                 'status' => 1,

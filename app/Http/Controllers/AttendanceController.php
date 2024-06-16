@@ -19,7 +19,7 @@ class AttendanceController extends Controller
         $employees= Employee::all();
         $schedules= Schedule::all();
 
-        return view('admin.attendances.index', compact('attendances'));
+        return view('admin.attendances.index', compact('attendances','employees'));
     }
 
     /**

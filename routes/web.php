@@ -66,7 +66,7 @@ Route::middleware([
             'edit' => 'admin.attendances.edit',
             'update' => 'admin.attendances.update',
             'destroy' => 'admin.attendances.destroy'
-        ])->middleware([\App\Http\Middleware\EmployeeAuth::class]);
+        ]);
 
 });
 
