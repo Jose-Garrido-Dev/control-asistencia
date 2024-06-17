@@ -81,6 +81,8 @@ Route::middleware(['web'])->group(function () {
     // Ruta para el dashboard de empleados, protegida por el middleware
     Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard')->middleware([\App\Http\Middleware\EmployeeAuth::class]);
 
+    Route::get('employee/attendance', [EmployeeController::class, 'attendance'])->name('employee.attendance')->middleware([\App\Http\Middleware\EmployeeAuth::class]);
+
     Route::post('employee/logout', [EmployeeController::class, 'logoutEmployee'])->name('employee.logout');
 
     Route::post('employee/store',[EmployeeAtendanceController::class,'store'])->name('employee.store');

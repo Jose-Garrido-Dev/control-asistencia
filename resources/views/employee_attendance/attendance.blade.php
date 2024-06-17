@@ -133,21 +133,11 @@
 
         </div>    
 
-        <h1 class="font-semibold text-2xl mb-3">Registro de Asistencia</h1>
+        <h1 class="font-semibold text-3xl mb-3">Registro de Asistencia</h1>
 
-        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
-        @if (session('employee'))
-            <h1 class="font-bold text-3xl">Hola, {{ session('firstName') }} {{ session('lastName') }}</h1>
-            <!--<p>Employee ID: {{ session('employee')->employee_id }}</p>-->
-            @include('layouts.includes.employee.dashboard')
-    
-            <!-- Botón para cerrar sesión -->
-            <form id="logout-form" action="{{ route('employee.logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-        @else
-            <p>No se encontró información del empleado en la sesión.</p>
-        @endif
+        @include('layouts.includes.employee.employeeAttendanceReport')
+
+       
     </div>
 </div>
 

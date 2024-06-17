@@ -1,10 +1,4 @@
 <x-admin-layout>
-    
-    <a href="#" class=" container mx-auto block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Bienvenidos al Panel de control</h5>
-    <p class="font-normal text-gray-700 dark:text-gray-400">Hola, aquí puedes interactuar con los horarios de los colaboradores.</p>
-    </a>
     <div class="mt-12">
         <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -28,7 +22,7 @@
             </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-lg leading-normal font-normal text-blue-gray-600">Empleados a tiempo</p>
-              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">2,300</h4>
+              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">10</h4>
             </div>
           </div>
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -39,16 +33,10 @@
             </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-lg leading-normal font-normal text-blue-gray-600">Empleados Tarde</p>
-              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">3,462</h4>
+              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">1</h4>
             </div>
           </div>
     
-        </div>
-        
-        <div class="mb-4 grid grid-cols-2 gap-6 xl:grid-cols-3">
-          <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
-            hola
-          </div>
         </div>
     </div>    
 </x-admin-layout>

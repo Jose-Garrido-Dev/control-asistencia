@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Models\Schedule;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -177,5 +179,15 @@ class EmployeeController extends Controller
             $request->session()->flush(); // Para asegurar que la sesión se limpie completamente
     
             return redirect()->route('employee.login');
+        }
+
+        public function attendance(Request $request){
+            $employee = session('employee');
+            $employeeId = $employee['employee_id'];
+
+
+            // Filtrar las asistencias por el rut del usuario logueado para la vista
+            $attendances = Attendance::where('rut', $employeeId)->get();
+            return view('employee_attendance.attendance',compact('attendances'));
         }
 }
