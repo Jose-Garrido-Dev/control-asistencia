@@ -1,6 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Employee;
+use App\Models\Attendance;
+use Carbon\Carbon;
+
+
 
 use Illuminate\Http\Request;
 
@@ -11,7 +16,17 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $totalEmployees = Employee::count();
+
+        //Obtener la fecha actual
+        $today = Carbon::today();
+
+
+         // Contar los empleados a tiempo y atrasados basados en el estado de hoy
+         $employeesOnTime = Attendance::where('date', $today)->where('status', 1)->count();
+         $employeesLate = Attendance::where('date', $today)->where('status', 2)->count();
+ 
+         return view('admin.dashboard', compact('totalEmployees','employeesOnTime', 'employeesLate'));
     }
 
     /**

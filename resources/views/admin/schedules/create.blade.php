@@ -17,6 +17,7 @@
             </x-label>
 
             <x-input name="time_in"
+                type="time"
                 value="{{old('time_in')}}"
                 x-model="time_in"
                 class="w-full" 
@@ -29,6 +30,7 @@
             </x-label>
 
             <x-input name="time_out"
+                type="time"
                 value="{{old('time_out')}}"
                 x-model="time_out"
                 class="w-full" 

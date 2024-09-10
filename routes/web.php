@@ -5,6 +5,7 @@ use App\Http\Controllers\EmployeeAtendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,9 +21,7 @@ Route::middleware([
         return view('admin.dashboard');
     })->name('dashboard');
 
-    Route::get('/dashboard/admin', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/dashboard',[ AdminController::class, 'index'])->name('admin.dashboard');
 
     Route::resource('/admin/employees', EmployeeController::class)
     ->except('show')

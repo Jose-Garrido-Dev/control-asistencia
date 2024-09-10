@@ -18,6 +18,7 @@
             </x-label>
 
             <x-input name="time_in"
+                type="time"
                 value="{{$schedule->time_in}}"
                 class="w-full"  />
         </div>
@@ -28,6 +29,7 @@
             </x-label>
 
             <x-input name="time_out"
+                type="time"
                 value="{{$schedule->time_out}}"
                 class="w-full"  />
         </div>

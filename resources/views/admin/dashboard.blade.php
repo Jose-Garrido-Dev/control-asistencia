@@ -11,7 +11,7 @@
             </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-lg leading-normal font-normal text-blue-gray-600">Total Empleados</p>
-              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">52</h4>
+              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{{ $totalEmployees }}</h4>
             </div>
           </div>
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -22,7 +22,7 @@
             </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-lg leading-normal font-normal text-blue-gray-600">Empleados a tiempo</p>
-              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">10</h4>
+              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{{ $employeesOnTime  }}</h4>
             </div>
           </div>
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -33,7 +33,7 @@
             </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-lg leading-normal font-normal text-blue-gray-600">Empleados Tarde</p>
-              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">1</h4>
+              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{{ $employeesLate  }}</h4>
             </div>
           </div>
     
