@@ -36,7 +36,7 @@ class AttendanceSeeder extends Seeder
                 'employee_id' => 3, // Carlos
                 'rut' => '7299553-6',
                 'date' => '2024-06-01',
-                'time_in' => '14:30:00',
+                'time_in' => '14:00:00',
                 'status' => 1,
                 'time_out' => '22:00:00',
                 'num_hr' => 8,

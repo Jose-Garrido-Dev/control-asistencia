@@ -23,7 +23,7 @@
                               <x-slot name="trigger">
                                   @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                       <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                          <img class="h-8 w-8 rounded-full object-cover" src="{{ asset('storage/photos/employeedefault.png') }}" alt="Default Employee Photo" />
+                                          <img class="h-8 w-8 rounded-full object-cover" src="{{ asset('/employeedefault.png') }}" alt="Default Employee Photo" />
                                       </button>
                                   @else
                                       <span class="inline-flex rounded-md">
