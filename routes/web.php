@@ -85,4 +85,7 @@ Route::middleware(['web'])->group(function () {
     Route::post('employee/logout', [EmployeeController::class, 'logoutEmployee'])->name('employee.logout');
 
     Route::post('employee/store',[EmployeeAtendanceController::class,'store'])->name('employee.store');
+    
+    Route::get('/descargar-asistencias', [EmployeeAtendanceController::class, 'export'])->name('attendances.export');
+
 });

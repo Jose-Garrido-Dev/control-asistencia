@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Employee;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AttendancesExport;
 
 
 class EmployeeAtendanceController extends Controller
@@ -151,4 +153,11 @@ class EmployeeAtendanceController extends Controller
     {
         //
     }
+
+
+    public function export()
+    {
+        return Excel::download(new AttendancesExport, 'attendances.xlsx');
+    }
+
 }
