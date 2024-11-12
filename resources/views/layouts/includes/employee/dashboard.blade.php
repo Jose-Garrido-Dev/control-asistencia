@@ -56,6 +56,9 @@
                         <option value="" selected>Selecciona un estado</option>
                         <option value="in">Entrada</option>
                         <option value="out">Salida</option>
+                        <option value="in-collation">Inicio Colación</option>
+                        <option value="out-collation">Termino Colación</option>
+                        
                     </select>
                 
                     <!-- Campo oculto para el employee_id -->
