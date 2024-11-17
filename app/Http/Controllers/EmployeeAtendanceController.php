@@ -32,95 +32,69 @@ class EmployeeAtendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-  
-       
-        // Validación de los datos del formulario
-        $request->validate([
-            'employee_id' => 'required'
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'employee_id' => 'required'
+    ]);
 
-        $employee = Employee::where('employee_id', $request->employee_id)->first('id');
-        if (!$employee) {
-            return back()->with('error', 'Empleado no encontrado.');
-        }
+    $employee = Employee::where('employee_id', $request->employee_id)->first('id');
+    if (!$employee) {
+        return back()->with('error', 'Empleado no encontrado.');
+    }
     
-        $employee_id = $employee->id; // Acceder al valor del campo id
+    $employee_id = $employee->id;
+    $currentTime = now()->format('H:i:s');
+    $attendance = Attendance::where('employee_id', $employee_id)
+                            ->where('date', now()->toDateString())
+                            ->first();
 
-        if($request->time === 'in'){
-            $currentTime = now()->format('H:i:s');
-                    // Crear o actualizar el registro de asistencia
-
-                // Verificar si ya existe un registro para hoy con 'time_in' ya registrado
-            $existingAttendance = Attendance::where('employee_id', $employee_id)
-                                                ->where('date', now()->toDateString())
-                                                ->whereNotNull('time_in')
-                                                ->first();
-
-            if ($existingAttendance) {
-            return back()->with('error', 'Ya se ha registrado una entrada para hoy.');
+    // Verificar el tipo de registro (entrada, salida, inicio colación, término colación)
+    switch ($request->time) {
+        case 'in':
+            if ($attendance && $attendance->time_in) {
+                return back()->with('error', 'Ya se ha registrado una entrada para hoy.');
             }
+            Attendance::updateOrCreate(
+                ['employee_id' => $employee_id, 'date' => now()->toDateString()],
+                ['time_in' => $currentTime, 'status' => 1, 'num_hr' => 0]
+            );
+            return back()->with('success', 'Entrada registrada correctamente.');
 
-
-        $attendance = Attendance::updateOrCreate(
-            [
-                'employee_id' => $employee_id,
-                'rut' => $request->employee_id,
-                'date' => now()->toDateString(),
-            ],
-            [
-                'time_in' => $currentTime, // Aquí se asigna la hora actual si es una entrada
-                'time_out' => null, // Puedes decidir si asignar null o dejarlo como está
-                'status' => 1, // Puedes ajustar esto según sea necesario
-                'num_hr' => 0, // Puedes ajustar esto según sea necesario
-            ]
-        );
-    
-        // Devolver una redirección a la página anterior con un mensaje de éxito
-        return back()->with('success', 'Asistencia registrada correctamente.');
-        }
-
-        if($request->time === 'out'){
-
-            $currentTime = now()->format('H:i:s');
-
-                    // Buscar el registro de asistencia del día de hoy para el empleado
-            $attendance = Attendance::where('employee_id', $employee_id)
-            ->where('date', now()->toDateString())
-            ->first();
-
-            if (!$attendance || !$attendance->time_in) {
-                return back()->with('error', 'No se ha registrado una entrada para hoy.');
+        case 'out':
+            if (!$attendance || !$attendance->time_in || $attendance->time_out) {
+                return back()->with('error', 'No se puede registrar la salida.');
             }
-
-                    // Verificar si ya se ha registrado una salida para hoy
-        if ($attendance->time_out) {
-            return back()->with('error', 'Ya se ha registrado una salida para hoy.');
-        }
-
-                    // Calcular las horas trabajadas
             $timeIn = Carbon::createFromFormat('H:i:s', $attendance->time_in);
             $timeOut = Carbon::createFromFormat('H:i:s', $currentTime);
-            $numHr = $timeIn->diffInHours($timeOut);
-            // Redondear hacia abajo (floor) o hacia arriba (ceil) según tu necesidad
-            $numHr = floor($numHr);
-
-            // Actualizar el registro de asistencia con la hora de salida y las horas trabajadas
-            $attendance->update([
-                'time_out' => $currentTime,
-                'num_hr' => $numHr,
-            ]);
-
-            // Devolver una redirección a la página anterior con un mensaje de éxito
+            $numHr = floor($timeIn->diffInHours($timeOut));
+            $attendance->update(['time_out' => $currentTime, 'num_hr' => $numHr]);
             return back()->with('success', 'Salida registrada correctamente.');
-           }
 
-        // En caso de que no se cumpla ninguna condición
-        return back()->with('error', 'Operación no válida.');
+        case 'in-collation':
+            if (!$attendance || !$attendance->time_in) {
+                return back()->with('error', 'Debe registrar una entrada antes de iniciar la colación.');
+            }
+            if ($attendance->start_collation) {
+                return back()->with('error', 'Inicio de colación ya registrado.');
+            }
+            $attendance->update(['start_collation' => $currentTime]);
+            return back()->with('success', 'Inicio de colación registrado correctamente.');
+
+        case 'out-collation':
+            if (!$attendance || !$attendance->time_in) {
+                return back()->with('error', 'Debe registrar una entrada antes de terminar la colación.');
+            }
+            if (!$attendance->start_collation || $attendance->end_collation) {
+                return back()->with('error', 'No se puede registrar el término de colación.');
+            }
+            $attendance->update(['end_collation' => $currentTime]);
+            return back()->with('success', 'Término de colación registrado correctamente.');
         
-
+        default:
+            return back()->with('error', 'Operación no válida.');
     }
+}
 
     /**
      * Display the specified resource.

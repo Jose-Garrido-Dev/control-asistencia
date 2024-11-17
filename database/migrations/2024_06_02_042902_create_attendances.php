@@ -20,6 +20,8 @@ return new class extends Migration
             $table->date('date');
             $table->time('time_in')->nullable();
             $table->time('time_out')->nullable();
+            $table->time('start_collation')->nullable(); // columna incorporada
+            $table->time('end_collation')->nullable();// columna incorporada
             $table->integer('status')->nullable()->default(0);
             $table->double('num_hr', 8, 2)->nullable()->default(8);
             $table->timestamps();

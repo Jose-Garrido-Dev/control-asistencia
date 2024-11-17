@@ -21,6 +21,8 @@ class AttendanceSeeder extends Seeder
                 'time_in' => '07:00:00',
                 'status' => 1,
                 'time_out' => '19:00:00',
+                'start_collation' => '14:00:00',
+                'end_collation' => '15:00:00',
                 'num_hr' => 8,
             ],
             [
@@ -30,6 +32,8 @@ class AttendanceSeeder extends Seeder
                 'time_in' => '19:00:00',
                 'status' => 1,
                 'time_out' => '07:00:00',
+                'start_collation' => '14:00:00',
+                'end_collation' => '15:00:00',
                 'num_hr' => 8,
             ],
             [
@@ -39,6 +43,8 @@ class AttendanceSeeder extends Seeder
                 'time_in' => '14:00:00',
                 'status' => 1,
                 'time_out' => '22:00:00',
+                'start_collation' => '15:03:00',
+                'end_collation' => '15:05:20',
                 'num_hr' => 8,
             ]
         ]);

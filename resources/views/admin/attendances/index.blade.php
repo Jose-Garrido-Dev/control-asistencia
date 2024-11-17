@@ -15,7 +15,7 @@
                             Id
                         </th>
                         <th scope="col" class="px-6 py-3">
-                           Rut Colaborador
+                           Rut
                         </th>
     
                         <th scope="col" class="px-6 py-3">
@@ -30,8 +30,18 @@
                             Hora de entrada
                         </th>
 
+
                         <th scope="col" class="px-6 py-3">
-                            Hora de salida
+                            Inicio Colación
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            Término Colación
+                        </th>
+
+                        
+                        <th scope="col" class="px-6 py-3">
+                            Término Jornada
                         </th>
 
                         <th scope="col" class="px-6 py-3">
@@ -71,6 +81,16 @@
 
                             <td class="px-6 py-4">
                                 {{ $attendance->time_in }}
+                            </td>
+
+
+
+                            <td class="px-6 py-4">
+                                {{ $attendance->start_collation }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $attendance->end_collation }}
                             </td>
 
                             <td class="px-6 py-4">

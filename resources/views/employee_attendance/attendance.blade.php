@@ -20,7 +20,7 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased" x-data="{open:true}">
-
+ 
         
         @include('layouts.includes.employee.nav')
           
