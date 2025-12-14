@@ -12,7 +12,7 @@
            </svg>
         </button>
        <a href="/" class="flex ms-2 md:me-24">
-         <img src="/security.png" class="h-12 me-3" alt="FlowBite Logo" />
+         <img src="{{asset('Security.png')}}" class="h-12 me-3" alt="FlowBite Logo" />
          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Control Asistencia</span>
        </a>
      </div>
