@@ -32,10 +32,12 @@ class ScheduleController extends Controller
         $request->validate([
             'time_in' => 'required',
             'time_out' => 'required',
-
         ]);
 
-        Schedule::create($request->all());
+        $data = $request->all();
+        $data['enable_collation'] = $request->has('enable_collation');
+
+        Schedule::create($data);
 
         return redirect()->route('admin.schedules.index');
     }
@@ -59,7 +61,10 @@ class ScheduleController extends Controller
             'time_out' => 'required',
         ]);
         
-        $schedule->update($request->all());
+        $data = $request->all();
+        $data['enable_collation'] = $request->has('enable_collation');
+        
+        $schedule->update($data);
         return redirect()->route('admin.schedules.index', $schedule);
     }
 

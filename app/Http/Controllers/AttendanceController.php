@@ -18,8 +18,11 @@ class AttendanceController extends Controller
         $attendances= Attendance::latest('id')->paginate();
         $employees= Employee::all();
         $schedules= Schedule::all();
+        
+        // Verificar si hay algún horario con colación habilitada
+        $hasCollationEnabled = Schedule::where('enable_collation', true)->exists();
 
-        return view('admin.attendances.index', compact('attendances','employees'));
+        return view('admin.attendances.index', compact('attendances','employees', 'hasCollationEnabled'));
     }
 
     /**
@@ -66,8 +69,9 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Attendance $attendance)
     {
-        //
+        $attendance->delete();
+        return redirect()->route('admin.attendances.index')->with('success', 'Registro de asistencia eliminado correctamente.');
     }
 }

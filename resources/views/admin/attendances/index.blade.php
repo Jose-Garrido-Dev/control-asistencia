@@ -30,7 +30,7 @@
                             Hora de entrada
                         </th>
 
-
+                        @if($hasCollationEnabled)
                         <th scope="col" class="px-6 py-3">
                             Inicio Colación
                         </th>
@@ -38,6 +38,7 @@
                         <th scope="col" class="px-6 py-3">
                             Término Colación
                         </th>
+                        @endif
 
                         
                         <th scope="col" class="px-6 py-3">
@@ -83,8 +84,7 @@
                                 {{ $attendance->time_in }}
                             </td>
 
-
-
+                            @if($hasCollationEnabled)
                             <td class="px-6 py-4">
                                 {{ $attendance->start_collation }}
                             </td>
@@ -92,6 +92,7 @@
                             <td class="px-6 py-4">
                                 {{ $attendance->end_collation }}
                             </td>
+                            @endif
 
                             <td class="px-6 py-4">
                                 {{ $attendance->time_out }}
@@ -108,7 +109,11 @@
                             </td>
 
                             <td class="px-6 py-4">
-                                {{ $attendance->num_hr }}
+                                @if($attendance->time_out)
+                                    <span class="font-semibold text-gray-600">{{ number_format($attendance->num_hr, 2) }} hrs</span>
+                                @else
+                                    <span class="text-gray-400 italic">En progreso...</span>
+                                @endif
                             </td>
     
                       {{--      <td class="px-6 py-4">

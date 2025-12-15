@@ -9,7 +9,11 @@ class Schedule extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['time_in', 'time_out'];
+    protected $fillable = ['time_in', 'time_out', 'enable_collation'];
+
+    protected $casts = [
+        'enable_collation' => 'boolean',
+    ];
 
     public function employees()
     {

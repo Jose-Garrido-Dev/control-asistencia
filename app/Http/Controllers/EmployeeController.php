@@ -41,14 +41,38 @@ class EmployeeController extends Controller
     {
         //return $request;
         $request->validate([
-            'employee_id' => 'required|unique:employees',
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'address' => 'required',
-            'birthdate' => 'required|date',
-            'phone' => 'required',
+            'employee_id' => 'required|unique:employees|max:20',
+            'firstName' => 'required|string|max:50',
+            'lastName' => 'required|string|max:50',
+            'address' => 'required|string|max:500',
+            'birthdate' => 'required|date|before:today',
+            'phone' => 'required|digits_between:8,10|numeric',
             'position_id' => 'required|exists:positions,id',
             'schedule_id' => 'required|exists:schedules,id',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'employee_id.required' => 'El RUT/DNI es obligatorio.',
+            'employee_id.unique' => 'Este RUT/DNI ya está registrado.',
+            'employee_id.max' => 'El RUT/DNI no puede tener más de 20 caracteres.',
+            'firstName.required' => 'El nombre es obligatorio.',
+            'firstName.max' => 'El nombre no puede tener más de 50 caracteres.',
+            'lastName.required' => 'El apellido es obligatorio.',
+            'lastName.max' => 'El apellido no puede tener más de 50 caracteres.',
+            'address.required' => 'La dirección es obligatoria.',
+            'address.max' => 'La dirección no puede tener más de 500 caracteres.',
+            'birthdate.required' => 'La fecha de nacimiento es obligatoria.',
+            'birthdate.date' => 'La fecha de nacimiento no es válida.',
+            'birthdate.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
+            'phone.required' => 'El teléfono es obligatorio.',
+            'phone.digits_between' => 'El teléfono debe tener entre 8 y 10 dígitos.',
+            'phone.numeric' => 'El teléfono solo debe contener números.',
+            'position_id.required' => 'Debe seleccionar un cargo.',
+            'position_id.exists' => 'El cargo seleccionado no existe.',
+            'schedule_id.required' => 'Debe seleccionar un horario.',
+            'schedule_id.exists' => 'El horario seleccionado no existe.',
+            'photo.image' => 'El archivo debe ser una imagen.',
+            'photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg o gif.',
+            'photo.max' => 'La imagen no puede ser mayor a 2MB.',
         ]);
 
         Employee::create($request->all());
@@ -86,14 +110,38 @@ class EmployeeController extends Controller
     {
 
         $request->validate([
-            'employee_id' => 'required|unique:employees,employee_id,'. $employee->id,
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'address' => 'required',
-            'birthdate' => 'required|date',
-            'phone' => 'required',
+            'employee_id' => 'required|unique:employees,employee_id,'. $employee->id . '|max:20',
+            'firstName' => 'required|string|max:50',
+            'lastName' => 'required|string|max:50',
+            'address' => 'required|string|max:500',
+            'birthdate' => 'required|date|before:today',
+            'phone' => 'required|digits_between:8,10|numeric',
             'position_id' => 'required|exists:positions,id',
             'schedule_id' => 'required|exists:schedules,id',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'employee_id.required' => 'El RUT/DNI es obligatorio.',
+            'employee_id.unique' => 'Este RUT/DNI ya está registrado.',
+            'employee_id.max' => 'El RUT/DNI no puede tener más de 20 caracteres.',
+            'firstName.required' => 'El nombre es obligatorio.',
+            'firstName.max' => 'El nombre no puede tener más de 50 caracteres.',
+            'lastName.required' => 'El apellido es obligatorio.',
+            'lastName.max' => 'El apellido no puede tener más de 50 caracteres.',
+            'address.required' => 'La dirección es obligatoria.',
+            'address.max' => 'La dirección no puede tener más de 500 caracteres.',
+            'birthdate.required' => 'La fecha de nacimiento es obligatoria.',
+            'birthdate.date' => 'La fecha de nacimiento no es válida.',
+            'birthdate.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
+            'phone.required' => 'El teléfono es obligatorio.',
+            'phone.digits_between' => 'El teléfono debe tener entre 8 y 10 dígitos.',
+            'phone.numeric' => 'El teléfono solo debe contener números.',
+            'position_id.required' => 'Debe seleccionar un cargo.',
+            'position_id.exists' => 'El cargo seleccionado no existe.',
+            'schedule_id.required' => 'Debe seleccionar un horario.',
+            'schedule_id.exists' => 'El horario seleccionado no existe.',
+            'photo.image' => 'El archivo debe ser una imagen.',
+            'photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg o gif.',
+            'photo.max' => 'La imagen no puede ser mayor a 2MB.',
         ]);
 
         $employee->update($request->all());
@@ -166,11 +214,14 @@ class EmployeeController extends Controller
                 return redirect()->route('employee.login')->withErrors('Por favor, inicia sesión primero.');
             }
     
+            // Obtener el empleado completo con su horario
+            $employeeData = Employee::with('schedule')->find($employee->id);
+            $schedule = $employeeData->schedule;
+    
             // Pasar los datos del empleado a la vista del dashboard
-
             $employees=Employee::all();
             $totalEmployees = $employees->count();
-            return view('employee_attendance.index', compact('employee', 'firstName', 'lastName','totalEmployees'));
+            return view('employee_attendance.index', compact('employee', 'firstName', 'lastName','totalEmployees', 'schedule'));
         }
 
         public function logoutEmployee(Request $request)

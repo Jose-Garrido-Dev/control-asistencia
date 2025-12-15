@@ -38,12 +38,13 @@ public function store(Request $request)
         'employee_id' => 'required'
     ]);
 
-    $employee = Employee::where('employee_id', $request->employee_id)->first('id');
+    $employee = Employee::with('schedule')->where('employee_id', $request->employee_id)->first();
     if (!$employee) {
         return back()->with('error', 'Empleado no encontrado.');
     }
     
     $employee_id = $employee->id;
+    $schedule = $employee->schedule;
     $currentTime = now()->format('H:i:s');
     $attendance = Attendance::where('employee_id', $employee_id)
                             ->where('date', now()->toDateString())
@@ -55,9 +56,22 @@ public function store(Request $request)
             if ($attendance && $attendance->time_in) {
                 return back()->with('error', 'Ya se ha registrado una entrada para hoy.');
             }
+            
+            // Determinar si llegó a tiempo o atrasado
+            $status = 1; // Por defecto a tiempo
+            if ($schedule) {
+                $scheduledTime = Carbon::createFromFormat('H:i:s', $schedule->time_in);
+                $actualTime = Carbon::createFromFormat('H:i:s', $currentTime);
+                
+                // Si la hora actual es mayor que la hora programada, está atrasado
+                if ($actualTime->gt($scheduledTime)) {
+                    $status = 2; // Atrasado
+                }
+            }
+            
             Attendance::updateOrCreate(
                 ['employee_id' => $employee_id, 'date' => now()->toDateString()],
-                ['time_in' => $currentTime, 'status' => 1, 'num_hr' => 0]
+                ['rut' => $employee->employee_id, 'time_in' => $currentTime, 'status' => $status, 'num_hr' => 0]
             );
             return back()->with('success', 'Entrada registrada correctamente.');
 
@@ -65,13 +79,26 @@ public function store(Request $request)
             if (!$attendance || !$attendance->time_in || $attendance->time_out) {
                 return back()->with('error', 'No se puede registrar la salida.');
             }
-            $timeIn = Carbon::createFromFormat('H:i:s', $attendance->time_in);
-            $timeOut = Carbon::createFromFormat('H:i:s', $currentTime);
-            $numHr = floor($timeIn->diffInHours($timeOut));
+            
+            // Crear objetos Carbon con la fecha completa para manejar turnos nocturnos
+            $timeIn = Carbon::parse($attendance->date . ' ' . $attendance->time_in);
+            $timeOut = Carbon::parse(now()->toDateString() . ' ' . $currentTime);
+            
+            // Si la hora de salida es menor que la hora de entrada, añadir un día (turno nocturno)
+            if ($timeOut->lt($timeIn)) {
+                $timeOut->addDay();
+            }
+            
+            // Calcular horas trabajadas con decimales
+            $numHr = round($timeIn->diffInHours($timeOut, true), 2);
+            
             $attendance->update(['time_out' => $currentTime, 'num_hr' => $numHr]);
             return back()->with('success', 'Salida registrada correctamente.');
 
         case 'in-collation':
+            if (!$schedule || !$schedule->enable_collation) {
+                return back()->with('error', 'El registro de colación no está habilitado para su horario.');
+            }
             if (!$attendance || !$attendance->time_in) {
                 return back()->with('error', 'Debe registrar una entrada antes de iniciar la colación.');
             }
@@ -82,6 +109,9 @@ public function store(Request $request)
             return back()->with('success', 'Inicio de colación registrado correctamente.');
 
         case 'out-collation':
+            if (!$schedule || !$schedule->enable_collation) {
+                return back()->with('error', 'El registro de colación no está habilitado para su horario.');
+            }
             if (!$attendance || !$attendance->time_in) {
                 return back()->with('error', 'Debe registrar una entrada antes de terminar la colación.');
             }

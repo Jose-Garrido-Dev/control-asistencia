@@ -34,6 +34,16 @@
                 class="w-full"  />
         </div>
 
+        <div class="mb-4">
+            <label class="flex items-center">
+                <input type="checkbox" 
+                    name="enable_collation" 
+                    value="1" 
+                    {{ $schedule->enable_collation ? 'checked' : '' }}
+                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                <span class="ml-2 text-sm text-gray-600">Habilitar registro de colación</span>
+            </label>
+        </div>
 
         <div class="flex justify-end">
             <x-button>

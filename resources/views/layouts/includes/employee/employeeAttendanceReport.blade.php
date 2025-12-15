@@ -75,7 +75,11 @@
                     </td>
 
                     <td class="px-6 py-4">
-                        {{ $attendance->num_hr }}
+                        @if($attendance->time_out)
+                            <span class="font-semibold text-gray-600">{{ number_format($attendance->num_hr, 2) }} hrs</span>
+                        @else
+                            <span class="text-gray-400 italic">En progreso...</span>
+                        @endif
                     </td>
             </tr>
             @endforeach
